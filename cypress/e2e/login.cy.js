@@ -20,12 +20,19 @@ describe('Testes de login do MiniShop', () =>{
   
 
   it('Login com dados incorretos', () => {
-    cy.get('#username').clear().type('Teste');
-    cy.get('#password').clear().type('123');
-    cy.get('button[type=submit').click();
-
+    cy.login({usuario:'Teste', senha:'123'})
     // Asserção
     cy.get('div[role=alert').should('be.visible')
+  })
+
+  it('Login com dados incorretos', () => {
+    // login por comandos
+    cy.login({usuario:'admin', senha:'12345'})
+    // Asserção
+    cy.contains('button', 'Sair').should('exist');
+    cy.title().should('be.eq', 'MiniShop - Home')
+
+
   })
 
 
