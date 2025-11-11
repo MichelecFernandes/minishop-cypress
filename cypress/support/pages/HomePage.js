@@ -6,7 +6,7 @@ export class HomePage{
 
     // Ações (métodos)
     visitar(){
-        cy.visitar('./html/home.html');
+        cy.visit('./html/home.html');
     }
 
     verificarTitulo(){
