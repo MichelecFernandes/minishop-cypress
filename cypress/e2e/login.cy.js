@@ -1,8 +1,10 @@
 describe('Testes de login do MiniShop', () =>{
   
   beforeEach('Acessar a url', () =>{
-    cy.visit('./html/index.html');
-  })
+    cy.visit('./html/index.html')
+    cy.fixture('users').its('usuarioValido').as('usuarioValido')
+    cy.fixture('users').its('usuarioInvalido').as('usuarioInvalido')
+})
 
   it('Verifica o título da aba da ágina', () => {
     cy.title().should('be.eq', 'MiniShop - Login')
@@ -20,14 +22,18 @@ describe('Testes de login do MiniShop', () =>{
   
 
   it('Login com dados incorretos', () => {
-    cy.login({usuario:'Teste', senha:'123'})
+    cy.get('@usuarioInvalido').then((usuario) =>{
+      cy.login(usuario)
+    })
     // Asserção
     cy.get('div[role=alert').should('be.visible')
   })
 
-  it('Login com dados incorretos', () => {
-    // login por comandos
-    cy.login({usuario:'admin', senha:'12345'})
+  it('Login com dados corretos', () => {
+    //cy.fixture('users').its('usuarioValido').as('usuarioValido')
+    cy.get('@usuarioValido').then((usuario) =>{
+      cy.login(usuario)
+    })
     // Asserção
     cy.contains('button', 'Sair').should('exist');
     cy.title().should('be.eq', 'MiniShop - Home')
