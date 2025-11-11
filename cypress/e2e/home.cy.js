@@ -1,13 +1,19 @@
 import { HomePage } from "../support/pages/HomePage"
 import { LoginPage } from "../support/pages/LoginPage";
 
+
 describe('Página Home da Aplicação MiniShop', () => {
     const home = new HomePage();
     const loginPage = new LoginPage();
 
     beforeEach(() =>{
-        home.visitar();
-        loginPage.login('admin', '12345')
+        cy.fixture('users').as('usuarios')
+
+        cy.get('@usuarios').then((usuarios) => {
+            const usuario = usuarios.usuarioValido;
+            home.visitar();
+            loginPage.login(usuario.usuario, usuario.senha);
+        })
     })
 
     it('Deve exibir o título correto', () =>{
